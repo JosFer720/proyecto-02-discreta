@@ -1,8 +1,8 @@
-#PROYECTO 02
-#MATEMATICA DISCRETA 1 - 10
-#FERNANDO RUIZ - 23065
-#FABIAN MORALES -23---
-#ERICK GUERRA - 23---
+# PROYECTO 02
+# MATEMATICA DISCRETA 1 - 10
+# FERNANDO RUIZ - 23065
+# FABIAN MORALES - 23---
+# ERICK GUERRA - 23---
 
 import random
 
@@ -35,7 +35,6 @@ def euclides_extendido(a, b):
         return mcd, x, y
 
 def inverso_modular(a, m):
-
     mcd, x, y = euclides_extendido(a, m)
     if mcd != 1:
         return None
