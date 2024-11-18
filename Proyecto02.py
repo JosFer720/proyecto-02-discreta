@@ -1,7 +1,7 @@
 # PROYECTO 02
 # MATEMATICA DISCRETA 1 - 10
 # FERNANDO RUIZ - 23065
-# FABIAN MORALES - 23---
+# FABIAN MORALES - 23267
 # ERICK GUERRA - 23---
 
 import random
@@ -46,13 +46,38 @@ def mcd(a, b):
         a, b = b, a % b
     return a
 
+def generar_llaves(rango_inferior, rango_superior):
+
+            primo1 = generar_primo_azar(rango_inferior,rango_superior)
+            primo2 = generar_primo_azar(rango_inferior,rango_superior)
+
+            #primo1 = 947
+            #primo2 = 919
+            print(primo1, primo2)
+            n = primo1 * primo2
+            e = 17
+            phin = (primo1-1) * (primo2-1)
+
+            d = inverso_modular(e,phin)
+            if (d == None):
+                return None
+            else:
+                return [e, n], [d, n]
+
+
+def encriptar(caracter, llave_publica):
+    c = ((caracter)**llave_publica[0]) % llave_publica[1]
+
+    return c
+
 def main():
     while True:
         print("\nElige una opción:")
         print("1. Generar un número primo al azar dentro de un rango")
         print("2. Calcular el MCD de dos números")
         print("3. Calcular el inverso modular de dos números")
-        print("4. Salir")
+        print("4. Cifrado")
+        print("5. Adios")
 
         opcion = input("Opción: ")
 
@@ -87,6 +112,35 @@ def main():
                 print(f"Error: {e}")
 
         elif opcion == "4":
+
+            numero_encriptar = int(input("Ingrese el número a encriptar: "))
+
+            try:
+
+                llaves = generar_llaves(11,1000)
+
+                if llaves is None:
+                    raise ValueError("Los primos generados no son válidos. Vuelva a intentarlo.")
+
+                else:
+                    print(llaves)
+
+
+                    print(encriptar(numero_encriptar,llaves[0]))
+
+            except ValueError as e:
+                print(f"Se detectó un error: {e}")
+
+
+
+
+            
+
+
+
+
+
+        elif opcion == "5":
             print("Saliendo del programa.")
             break
 
