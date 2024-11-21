@@ -1,9 +1,20 @@
-# PROYECTO 02
-# MATEMATICA DISCRETA 1 - 10
-# FERNANDO RUIZ - 23065
-# FABIAN MORALES - 23267
-# ERICK GUERRA - 23208
+"""
 
+                                                     Documentación Interna - PROYECTO 02
+
+    Nombre del Programa: Proyecto02.py
+
+    Fin En Mente: Implementar el sistema criptográfico RSA a través de un programa de computadora escrito en Python.
+
+    Programador: Diego Fabián Morales Dávila    | 23267
+                 Erick Antonio Guerra Illescas  | 23208
+                 José Fernando Ruiz Estrada     | 23065
+
+    Lenguaje: Python 3.7
+
+    Recursos: Ninguno
+
+"""
 import random
 
 def criba(n):
@@ -46,118 +57,70 @@ def mcd(a, b):
         a, b = b, a % b
     return a
 
+#Función para Generar llaves, pública y privada. Obtiene el rango superior e inferior para la generación de dos números primos (p y q). Devuelve la llave pública y privada, ambas como arreglos.
 def generar_llaves(rango_inferior, rango_superior):
 
+            #Generación de números primos con la función "generar_primos_azar".
             primo1 = generar_primo_azar(rango_inferior,rango_superior)
             primo2 = generar_primo_azar(rango_inferior,rango_superior)
 
-            #primo1 = 947
-            #primo2 = 919
+            
             print(primo1, primo2)
+
+            #Obtención de (n) para el módulo de la llave pública y privada.
             n = primo1 * primo2
-            e = 17
+
+            if (n < 65537):
+                e = 17
+            else:
+                e = 65537
+
+            #Calcular el totiente para calcular la clave (d) para la llave privada.
             phin = (primo1-1) * (primo2-1)
 
+            #Obtener clave (d): e y phin deben ser coprimos. En caso de no serlo devuelve none.
             d = inverso_modular(e,phin)
+
+            #Si no es posible obtener una clave (d) devuelve none.
             if (d == None):
                 return None
             else:
+                #De lo contrario, devuelve 2 arreglos con cada llave, pública y privada respectivamente.
                 return [e, n], [d, n]
 
 
+#Función Encriptar: Obtiene la llave pública y el valor que se desea encriptar (m). Devuelve la cifra ingresada original (c).
 def encriptar(caracter, llave_publica):
-    print(llave_publica)
+    #print(llave_publica)
     c = ((caracter)**llave_publica[0]) % llave_publica[1]
 
     return c
 
+
+#Función Desencriptar: Obtiene la llave privada y el valor que se desea desencriptar (c). Devuelve la cifra ingresada original (m).
 def desencriptar(cifrado, llave_privada):
-    print(llave_privada)
+    #print(llave_privada)
     m = ((cifrado)**llave_privada[0]) % llave_privada[1]
 
     return m
 
 def main():
+
     rango_inferior = int(input("Ingrese el rango inferior: "))
     rango_superior = int(input("Ingrese el rango superior: "))
+
     llave_publica, llave_privada = generar_llaves(rango_inferior,rango_superior)
     print (llave_publica, llave_privada)
+    
     caracter = int(input("Ingrese un numero para encriptar: "))
     cifrado = encriptar(caracter, llave_publica)
-    print(cifrado)
+    print("El número " + str(caracter) + " encriptado es: " + str(cifrado))
+
+
     mensaje_descifrado = desencriptar(cifrado, llave_privada)
-    print(mensaje_descifrado)
+    print("El número cifrado " + str(cifrado) + " desencriptado es: " + str(mensaje_descifrado))
+    
 
 
-# def main():
-#     while True:
-#         print("\nElige una opción:")
-#         print("1. Generar un número primo al azar dentro de un rango")
-#         print("2. Calcular el MCD de dos números")
-#         print("3. Calcular el inverso modular de dos números")
-#         print("4. Cifrado")
-#         print("5. Descifrado")
-#         print("6. Adios")
-
-#         opcion = input("Opción: ")
-
-#         if opcion == "1":
-#             try:
-#                 inferior = int(input("Ingresa el límite inferior del rango: "))
-#                 superior = int(input("Ingresa el límite superior del rango: "))
-#                 primo = generar_primo_azar(inferior, superior)
-#                 print(f"Número primo generado: {primo}")
-#             except ValueError as e:
-#                 print(f"Error: {e}")
-
-#         elif opcion == "2":
-#             try:
-#                 a = int(input("Ingresa el primer número: "))
-#                 b = int(input("Ingresa el segundo número: "))
-#                 resultado_mcd = mcd(a, b)
-#                 print(f"El MCD de {a} y {b} es: {resultado_mcd}")
-#             except ValueError as e:
-#                 print(f"Error: {e}")
-
-#         elif opcion == "3":
-#             try:
-#                 a = int(input("Ingresa el número a: "))
-#                 m = int(input("Ingresa el módulo m: "))
-#                 inverso = inverso_modular(a, m)
-#                 if inverso is not None:
-#                     print(f"El inverso modular de {a} mod {m} es: {inverso}")
-#                 else:
-#                     print(f"No existe inverso modular para {a} mod {m}.")
-#             except ValueError as e:
-#                 print(f"Error: {e}")
-
-#         elif opcion == "4":
-
-#             numero_encriptar = int(input("Ingrese el número a encriptar: "))
-
-#             try:
-
-#                 llaves = generar_llaves(11,1000)
-
-#                 if llaves is None:
-#                     raise ValueError("Los primos generados no son válidos. Vuelva a intentarlo.")
-
-#                 else:
-#                     print(llaves)
-
-
-#                     print(encriptar(numero_encriptar,llaves[0]))
-
-#             except ValueError as e:
-#                 print(f"Se detectó un error: {e}")
-#         elif opcion == "5":
-
-
-#         elif opcion == "6":
-#             print("Saliendo del programa.")
-#             break
-
-#         else:
-#             print("Opción no válida, intenta de nuevo.")
 
 main()
